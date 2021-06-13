@@ -1,8 +1,8 @@
-import { Graphics } from "pixi.js"
-import getRandomPastel from "./utils/getRandomPastel"
+import { Graphics } from 'pixi.js'
+import getRandomPastel from './utils/getRandomPastel'
 
 export default class Planet {
-  constructor({x, y}) {
+  constructor({ x, y }) {
     this.color = getRandomPastel()
     this.graphic = new Graphics()
     this.graphic.beginFill(this.color).drawCircle(0, 0, 0).endFill()
@@ -13,7 +13,7 @@ export default class Planet {
 
     this.velocityVector = {
       rad: 0,
-      magni: 0
+      magni: 0,
     }
   }
 
@@ -25,11 +25,11 @@ export default class Planet {
     return this
   }
 
-  consume(){
+  consume() {
     this.consumed = true
   }
 
-  isConsumed(){
+  isConsumed() {
     return this.consumed
   }
 
@@ -62,12 +62,12 @@ export default class Planet {
     this.radius = radius
     return this
   }
-  
+
   getRadius() {
     return this.radius
   }
 
-  setCoords({x, y}){
+  setCoords({ x, y }) {
     this.graphic.x = x
     this.graphic.y = y
     return this
@@ -79,16 +79,16 @@ export default class Planet {
     return rad
   }
 
-  update(){
-    const {rad, magni} = this.getVelocity()
+  update() {
+    const { rad, magni } = this.getVelocity()
     const dx = magni * Math.cos(rad)
     const dy = magni * Math.sin(rad)
 
-    const {x, y} = this.getCoords()
+    const { x, y } = this.getCoords()
 
     this.setCoords({
       x: x + dx,
-      y: y + dy
+      y: y + dy,
     })
     return this
   }

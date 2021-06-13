@@ -1,4 +1,4 @@
-import { Application, Graphics, InteractionManager } from 'pixi.js'
+import { Application, InteractionManager } from 'pixi.js'
 
 import './index.css'
 import distanceBetween from './utils/distanceBetween'
@@ -44,31 +44,33 @@ interaction.on('mouseup', () => {
   planets.push(newPlanet)
   newPlanet = null
 })
-let tick = 0
 app.ticker.add(() => {
-  tick += 1
   const newPlanets = planets.reduce((arr, planet) => {
     if (planet.isConsumed()) {
       app.stage.removeChild(planet.getGraphic())
       return arr
     }
-    let finalVector = {rad: 0, magni: 0}
+    let finalVector = { rad: 0, magni: 0 }
     planets.forEach((otherPlanet) => {
+      // eslint-disable-next-line
       if (otherPlanet == planet) return
       const force = calculateGravity(planet, otherPlanet)
       const rad = planet.calculateRadiansFrom(otherPlanet.getCoords())
 
       const overlappedArea = calcPlanetIntersectionArea(planet, otherPlanet)
-      
-      if (overlappedArea > otherPlanet.getMass()/2){
+
+      if (overlappedArea > otherPlanet.getMass() / 2) {
         planet.merge(otherPlanet)
       }
 
-      finalVector = sumVectors({rad, magni: force}, finalVector)
+      finalVector = sumVectors({ rad, magni: force }, finalVector)
     })
-    const acceleration = finalVector.magni/planet.getMass()
+    const acceleration = finalVector.magni / planet.getMass()
 
-    const newVelocity = sumVectors(planet.getVelocity(), {magni: acceleration, rad: finalVector.rad})
+    const newVelocity = sumVectors(planet.getVelocity(), {
+      magni: acceleration,
+      rad: finalVector.rad,
+    })
 
     planet.setVelocity(newVelocity)
     planet.update()
