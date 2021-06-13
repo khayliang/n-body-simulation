@@ -18,6 +18,7 @@ const interaction = new InteractionManager(app.renderer)
 
 let planets = []
 
+
 let newPlanet = null
 
 interaction.on('mousedown', () => {
@@ -26,6 +27,7 @@ interaction.on('mousedown', () => {
     y: interaction.mouse.global.y,
   }
   newPlanet = new Planet(startingCoords)
+  newPlanet.setRadius(1)
   app.stage.addChild(newPlanet.getGraphic())
 })
 
@@ -41,8 +43,10 @@ interaction.on('mousemove', () => {
 })
 
 interaction.on('mouseup', () => {
+  if (!newPlanet) return
   planets.push(newPlanet)
   newPlanet = null
+  console.log(planets)
 })
 app.ticker.add(() => {
   const newPlanets = planets.reduce((arr, planet) => {
