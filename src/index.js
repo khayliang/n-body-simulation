@@ -2,6 +2,7 @@ import { Application, Graphics, InteractionManager } from 'pixi.js'
 
 import './index.css'
 import distanceBetween from './utils/distanceBetween'
+import Planet from './Planet'
 
 const mapSize = {
   width: window.innerWidth,
@@ -9,41 +10,40 @@ const mapSize = {
 }
 
 const app = new Application(mapSize)
-app.ticker.maxFPS = 60
+app.ticker.maxFPS = 1
 const interaction = new InteractionManager(app.renderer)
 
 const objects = []
 
-let dragging = false
-let newObject = null
-let startingCoords = null
-let endingCoords = null
+let newPlanet = null
 
 interaction.on('mousedown', () => {
-  dragging = true
-  startingCoords = {
+  const startingCoords = {
     x: interaction.mouse.global.x,
     y: interaction.mouse.global.y,
   }
-  newObject = new Graphics()
-  newObject.beginFill(0xffffff).drawCircle(startingCoords.x, startingCoords.y, 0).endFill()
-  app.stage.addChild(newObject)
+  newPlanet = new Planet(startingCoords)
+  app.stage.addChild(newPlanet.getGraphic())
 })
+
 interaction.on('mousemove', () => {
-  if (!startingCoords) return
-  endingCoords = {
+  if (!newPlanet) return
+  const currentCoords = {
     x: interaction.mouse.global.x,
     y: interaction.mouse.global.y,
   }
 
-  const radius = distanceBetween(endingCoords, startingCoords)
-
-  newObject.clear()
-  newObject.beginFill(0xffffff).drawCircle(startingCoords.x, startingCoords.y, radius).endFill()
+  const radius = distanceBetween(currentCoords, newPlanet.getCoords())
+  newPlanet.setRadius(radius)
 })
+
 interaction.on('mouseup', () => {
-  dragging = false
-  startingCoords = null
+  objects.push(newPlanet)
+  newPlanet = null
+})
+
+app.ticker.add(() => {
+
 })
 
 document.body.appendChild(app.view)
