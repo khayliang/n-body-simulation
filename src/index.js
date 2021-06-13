@@ -1,4 +1,4 @@
-import { Application, InteractionManager } from 'pixi.js'
+import { Application, InteractionManager, Text } from 'pixi.js'
 
 import './index.css'
 import distanceBetween from './utils/distanceBetween'
@@ -18,6 +18,13 @@ const maxVelocity = 5
 const app = new Application(mapSize)
 app.ticker.maxFPS = 60
 const interaction = new InteractionManager(app.renderer)
+const text = new Text('Click and drag to spawn a planet', {
+  fontFamily: 'Arial',
+  fontSize: 24,
+  fill: 0xff3f00,
+  align: 'center',
+})
+app.stage.addChild(text)
 
 let planets = []
 

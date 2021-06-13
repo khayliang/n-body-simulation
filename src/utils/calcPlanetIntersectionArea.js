@@ -1,3 +1,4 @@
+// borrowed from https://github.com/infusion/Circle.js/blob/master/circle.js
 export default function calcPlanetIntersectionArea(planet1, planet2) {
   const coords1 = planet1.getCoords()
   const coords2 = planet2.getCoords()
