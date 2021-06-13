@@ -11,6 +11,9 @@ const mapSize = {
   width: window.innerWidth,
   height: window.innerHeight,
 }
+const initialPlanets = 20
+const maxRadius = 50
+const maxVelocity = 5
 
 const app = new Application(mapSize)
 app.ticker.maxFPS = 60
@@ -18,6 +21,19 @@ const interaction = new InteractionManager(app.renderer)
 
 let planets = []
 
+for (let i = 0; i !== initialPlanets; i += 1){
+  const coords = {
+    x: mapSize.width * Math.random(),
+    y: mapSize.height * Math.random(),
+  }
+  const newPlanet = new Planet(coords)
+  newPlanet.setRadius(Math.random() * maxRadius).setVelocity({
+    magni: Math.random() * maxVelocity,
+    rad: Math.random() * Math.PI * 2 - Math.PI * 2
+  })
+  app.stage.addChild(newPlanet.getGraphic())
+  planets.push(newPlanet)
+}
 
 let newPlanet = null
 
@@ -63,7 +79,7 @@ app.ticker.add(() => {
 
       const overlappedArea = calcPlanetIntersectionArea(planet, otherPlanet)
 
-      if (overlappedArea > otherPlanet.getMass() / 2) {
+      if (overlappedArea > otherPlanet.getMass() / 1.1) {
         planet.merge(otherPlanet)
       }
 
