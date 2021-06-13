@@ -11,7 +11,7 @@ const mapSize = {
   width: window.innerWidth,
   height: window.innerHeight,
 }
-const initialPlanets = 20
+const initialPlanets = 50
 const maxRadius = 50
 const maxVelocity = 5
 
